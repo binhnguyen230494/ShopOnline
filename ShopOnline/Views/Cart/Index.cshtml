@@ -1,0 +1,60 @@
+﻿@model List<ShopOnline.Models.Caritem>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section jsFooter{
+
+    <script src="/assets/client/js/Controller/cartcotroller.js"></script>
+}
+<div class="content">
+    <div class="section group">
+        @if (Model.Count > 0)
+        {
+            <table style="font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;">
+                <thead>
+                    <tr>
+                        <td>Ma sp</td>
+                        <td>Ten sp</td>
+                        <td>Anh sp</td>
+                        <td>so luong</td>
+                        <td>don gia</td>
+                        <td>thanh tien</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Product.ID</td>
+                            <td>@item.Product.Name</td>
+                            <td><img src="@item.Product.Image" width="100" /></td>
+                            <td><input type="text" class="txtquanlity" data-id="@item.Product.ID" value="@item.Quantily" /></td>
+                            <td>@item.Product.Price.GetValueOrDefault(0).ToString("N0")</td>
+                            <td>@((item.Product.Price.GetValueOrDefault(0) * item.Quantily).ToString("N0"))</td>
+                            <td><a href="#" class="btn-delete" data-id="@item.Product.ID">Xoa</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <br />
+            <button id="btnContinue" class="btn">Tiep tuc mua hang</button>
+            <button id="btnUpdate" class="btn">Cap nhat gio hang</button>
+            <button id="btnDeleteAll" class="btn">Xoa gio hang</button>
+            <button id="btnPayment" class="btn">Thanh toan</button>
+        }
+        else
+        {
+            <span style="background-color:hsla(9, 100%, 64%, 0.5);">chua co san pham nao nam trong gio hang</span>
+        }
+    </div>
+
+</div>
+
+
+
+
+

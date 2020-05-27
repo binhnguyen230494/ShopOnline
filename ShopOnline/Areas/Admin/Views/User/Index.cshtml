@@ -1,0 +1,80 @@
+﻿
+@model PagedList.IPagedList<Model.EF.User>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Quan ly nguoi dung";
+    Layout = "~/Areas/Admin/Views/Shared/_Layouts.cshtml";
+}
+
+@section header {
+    danh sach nguoi dung
+}
+@section jsFooter{
+    <script src="/assets/admin/js/Controller/usercontroller.js"></script>
+}
+
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        @using (Html.BeginForm("Index", "User", FormMethod.Get))
+        {
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <div class="col-md-4">
+                        <input type="text" value="@ViewBag.SeachString" class="form-control" name="searchString" />
+                    </div>
+                    <br />
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-success">Tim kiem</button>
+                    </div>
+                    <br />
+                    <a class="btn btn-primary" href="/Admin/User/Create">them nguoi dung</a>
+                </div>
+            </div>
+            <br />
+
+        }
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Danh sach nguoi dung</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+
+                            <th>Tai khoan</th>
+                            <th>Ten</th>
+                            <th>Email</th>
+                            <th>trang thai</th>
+                            <th>#</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr id="row_@item.ID">
+                                <td>@item.UserName</td>
+                                <td>@item.Name</td>
+                                <td>@item.Email</td>
+                                <td><a href="#" class="btn-active" data-id="@item.ID">@(item.Status? "kich hoat":"khoa")</a></td>
+                                <td>
+                                    <a href="/Admin/User/Edit/@item.ID">Sua</a>
+                                    @Ajax.ActionLink("Xoa", "Delete", new { @id = item.ID }, new AjaxOptions
+                               {
+                                   Confirm = "ban co muon xoa ban ghi nay",
+                                   OnComplete = "$('#row_" + @item.ID + "').remove()",
+                                   HttpMethod = "Delete"
+                               })
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @searchString = @ViewBag.SearchString }))
+            </div>
+
+        </div>
+    </div>
+</div>
